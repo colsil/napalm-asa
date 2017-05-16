@@ -34,6 +34,8 @@ class AsaDriver(NetworkDriver):
         self.password = password
         self.timeout = timeout
 
+        self.candidate_config = None
+
         self.dest_file_system = None
 
         if optional_args is None:
@@ -103,3 +105,20 @@ class AsaDriver(NetworkDriver):
             configs['running'] = output
 
         return configs
+
+    def load_replace_candidate(self, filename=None, config=None):
+        if filename:
+            with open(filename, 'r') as file:
+                self.candidate_config = file.read()
+        elif config:
+            self.candidate_config = config
+        return True, "Candidate loaded to memory (no ASA support)"
+
+    def compare_config(self):
+        return "Not implemented yet"
+
+    def discard_config(self):
+        self.candidate_config = None
+
+    def commit_config(self):
+        raise NotImplementedError
