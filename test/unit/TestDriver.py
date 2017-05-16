@@ -13,12 +13,13 @@
 # the License.
 
 """Tests."""
+import json
 
 import unittest
 
 from napalm_asa import asa
+
 from napalm_base.test.base import TestConfigNetworkDriver, TestGettersNetworkDriver
-import json
 
 
 class TestConfigDriver(unittest.TestCase, TestConfigNetworkDriver):
@@ -34,12 +35,12 @@ class TestConfigDriver(unittest.TestCase, TestConfigNetworkDriver):
 
         optional_args = {'port': 12443, }
         cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
-                                        optional_args=optional_args)
+                                   optional_args=optional_args)
         cls.device.open()
 
         # Not implemented
-        #cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
-        #cls.device.commit_config()
+        # cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        # cls.device.commit_config()
 
 
 class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
@@ -57,7 +58,7 @@ class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
 
         optional_args = {'port': 12443, }
         cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
-                                        optional_args=optional_args)
+                                   optional_args=optional_args)
 
         if cls.mock:
             cls.device.device = FakeDevice()

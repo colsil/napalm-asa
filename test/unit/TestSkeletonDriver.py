@@ -17,6 +17,7 @@
 import unittest
 
 from napalm_asa import asa
+
 from napalm_base.test.base import TestConfigNetworkDriver
 
 
@@ -32,10 +33,15 @@ class TestConfigSkeletonDriver(unittest.TestCase, TestConfigNetworkDriver):
         cls.vendor = 'asa'
 
         optional_args = {'port': 12443, }
-        cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
-                                        optional_args=optional_args)
+        cls.device = asa.AsaDriver(
+            hostname,
+            username,
+            password,
+            timeout=60,
+            optional_args=optional_args
+        )
         cls.device.open()
 
-        #### Not implemented yet
-        #cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
-        #cls.device.commit_config()
+        # Not implemented yet
+        # cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        # cls.device.commit_config()

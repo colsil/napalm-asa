@@ -1,19 +1,21 @@
 """Test fixtures."""
 from builtins import super
 
-import pytest
-from napalm_base.test import conftest as parent_conftest
+from napalm_asa import asa
 
+from napalm_base.test import conftest as parent_conftest
 from napalm_base.test.double import BaseTestDouble
 
-from napalm_asa import asa
+import pytest
 
 
 @pytest.fixture(scope='class')
 def set_device_parameters(request):
     """Set up the class."""
+
     def fin():
         request.cls.device.close()
+
     request.addfinalizer(fin)
 
     request.cls.driver = asa.AsaDriver
