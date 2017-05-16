@@ -49,6 +49,8 @@ class AsaDriver(NetworkDriver):
                                      password=self.password)
         # ensure in enable mode
         self.device.enable()
+        # change to system context
+        self._send_command("changeto system")
         if not self.dest_file_system:
             try:
                 self.dest_file_system = self.device._autodetect_fs()
