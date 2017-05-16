@@ -16,7 +16,7 @@ def set_device_parameters(request):
         request.cls.device.close()
     request.addfinalizer(fin)
 
-    request.cls.driver = asa.SkeletonDriver
+    request.cls.driver = asa.AsaDriver
     request.cls.patched_driver = PatchedSkeletonDriver
     request.cls.vendor = 'asa'
     parent_conftest.set_device_parameters(request)
@@ -27,7 +27,7 @@ def pytest_generate_tests(metafunc):
     parent_conftest.pytest_generate_tests(metafunc, __file__)
 
 
-class PatchedSkeletonDriver(asa.SkeletonDriver):
+class PatchedSkeletonDriver(asa.AsaDriver):
     """Patched Skeleton Driver."""
 
     def __init__(self, hostname, username, password, timeout=60, optional_args=None):

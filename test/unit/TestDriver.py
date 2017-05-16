@@ -33,12 +33,13 @@ class TestConfigDriver(unittest.TestCase, TestConfigNetworkDriver):
         cls.vendor = 'asa'
 
         optional_args = {'port': 12443, }
-        cls.device = asa.SkeletonDriver(hostname, username, password, timeout=60,
+        cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
                                         optional_args=optional_args)
         cls.device.open()
 
-        cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
-        cls.device.commit_config()
+        # Not implemented
+        #cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        #cls.device.commit_config()
 
 
 class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
@@ -55,7 +56,7 @@ class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
         cls.vendor = 'asa'
 
         optional_args = {'port': 12443, }
-        cls.device = asa.SkeletonDriver(hostname, username, password, timeout=60,
+        cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
                                         optional_args=optional_args)
 
         if cls.mock:

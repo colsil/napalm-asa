@@ -19,13 +19,8 @@ Read https://napalm.readthedocs.io for more information.
 """
 
 from napalm_base.base import NetworkDriver
-from napalm_base.exceptions import (
-    ConnectionException,
-    SessionLockedException,
-    MergeConfigException,
-    ReplaceConfigException,
-    CommandErrorException,
-    )
+
+from netmiko import ConnectHandler
 
 
 class AsaDriver(NetworkDriver):
@@ -39,13 +34,72 @@ class AsaDriver(NetworkDriver):
         self.password = password
         self.timeout = timeout
 
+        self.dest_file_system = None
+
         if optional_args is None:
             optional_args = {}
 
     def open(self):
         """Implementation of NAPALM method open."""
-        pass
+        self.device = ConnectHandler(device_type='cisco_asa',
+                                     host=self.hostname,
+                                     username=self.username,
+                                     password=self.password)
+        # ensure in enable mode
+        self.device.enable()
+        if not self.dest_file_system:
+            try:
+                self.dest_file_system = self.device._autodetect_fs()
+            except AttributeError:
+                raise AttributeError("Netmiko _autodetect_fs not found please upgrade Netmiko or "
+                                     "specify dest_file_system in optional_args.")
 
     def close(self):
         """Implementation of NAPALM method close."""
-        pass
+        self.device.disconnect()
+
+    @staticmethod
+    def _send_command_postprocess(output):
+        """
+        Keep same structure as for ios module but don't do anything for now
+        """
+        return output
+
+    def _send_command(self, command):
+        """Wrapper for self.device.send.command().
+        If command is a list will iterate through commands until valid command.
+        """
+        if isinstance(command, list):
+            for cmd in command:
+                output = self.device.send_command(cmd)
+                if "% Invalid" not in output:
+                    break
+        else:
+            output = self.device.send_command(command)
+        return self._send_command_postprocess(output)
+
+    def get_config(self, retrieve='all'):
+        """Implementation of get_config for Cisco ASA.
+        Returns the startup or/and running configuration as dictionary.
+        The keys of the dictionary represent the type of configurationpy
+        (startup or running). The candidate is always empty string,
+        since Cisco ASA does not support candidate configuration.
+        """
+
+        configs = {
+            'startup': '',
+            'running': '',
+            'candidate': '',
+        }
+
+        if retrieve in ('startup', 'all'):
+            command = 'show startup-config'
+            output = self._send_command(command)
+            configs['startup'] = output
+
+        if retrieve in ('running', 'all'):
+            command = 'show running-config'
+            output = self._send_command(command)
+            configs['running'] = output
+
+        return configs
