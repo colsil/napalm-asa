@@ -41,6 +41,8 @@ class AsaDriver(NetworkDriver):
 
         if optional_args is None:
             optional_args = {}
+        else:
+            self.context = optional_args.get('context', None)
 
     def open(self):
         """Implementation of NAPALM method open."""
@@ -58,6 +60,7 @@ class AsaDriver(NetworkDriver):
             except AttributeError:
                 raise AttributeError("Netmiko _autodetect_fs not found please upgrade Netmiko or "
                                      "specify dest_file_system in optional_args.")
+        self._send_command("changeto context %s" % self.context)
 
     def close(self):
         """Implementation of NAPALM method close."""
