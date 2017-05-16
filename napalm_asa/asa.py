@@ -122,7 +122,7 @@ class AsaDriver(NetworkDriver):
         running_config = running_config.splitlines()
         candidate_config = self.candidate_config.splitlines()
         diff = unified_diff(running_config, candidate_config)
-        return "".join(diff)
+        return "\n".join(diff)
 
     def discard_config(self):
         self.candidate_config = None
