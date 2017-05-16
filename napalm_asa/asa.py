@@ -17,7 +17,7 @@ Napalm driver for Cisco ASA.
 
 Read https://napalm.readthedocs.io for more information.
 """
-import difflib
+from difflib import unified_diff
 
 from napalm_base.base import NetworkDriver
 
@@ -86,7 +86,7 @@ class AsaDriver(NetworkDriver):
     def get_config(self, retrieve='all'):
         """Implementation of get_config for Cisco ASA.
         Returns the startup or/and running configuration as dictionary.
-        The keys of the dictionary represent the type of configurationpy
+        The keys of the dictionary represent the type of configuration
         (startup or running). The candidate is always empty string,
         since Cisco ASA does not support candidate configuration.
         """
@@ -119,9 +119,10 @@ class AsaDriver(NetworkDriver):
 
     def compare_config(self):
         running_config = self.get_config(retrieve='running')['running']
-        differ = difflib.Differ()
-        diff = '\n'.join(list(differ.compare(running_config, self.candidate_config)))
-        return diff
+        running_config = running_config.splitlines()
+        candidate_config = self.candidate_config.splitlines()
+        diff = unified_diff(running_config, candidate_config)
+        return "".join(diff)
 
     def discard_config(self):
         self.candidate_config = None
