@@ -120,7 +120,7 @@ class AsaDriver(NetworkDriver):
     def compare_config(self):
         running_config = self.get_config(retrieve='running')['running']
         differ = difflib.Differ()
-        diff = differ.compare(running_config, self.candidate_config)
+        diff = list(differ.compare(running_config, self.candidate_config))
         return diff
 
     def discard_config(self):
