@@ -21,7 +21,7 @@ from napalm_asa import asa
 from napalm_base.test.base import TestConfigNetworkDriver
 
 
-class TestConfigSkeletonDriver(unittest.TestCase, TestConfigNetworkDriver):
+class TestConfigAsaDriver(unittest.TestCase, TestConfigNetworkDriver):
     """Group of tests that test Configuration related methods."""
 
     @classmethod
