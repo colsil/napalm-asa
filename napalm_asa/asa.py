@@ -17,6 +17,7 @@ Napalm driver for Cisco ASA.
 
 Read https://napalm.readthedocs.io for more information.
 """
+import difflib
 
 from napalm_base.base import NetworkDriver
 
@@ -117,7 +118,10 @@ class AsaDriver(NetworkDriver):
         return True, "Candidate loaded to memory (no ASA support)"
 
     def compare_config(self):
-        return "Not implemented yet"
+        running_config = self.get_config(retrieve='running')['running']
+        differ = difflib.Differ()
+        diff = differ.compare(running_config, self.candidate_config)
+        return diff
 
     def discard_config(self):
         self.candidate_config = None
