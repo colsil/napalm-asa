@@ -60,7 +60,8 @@ class AsaDriver(NetworkDriver):
             except AttributeError:
                 raise AttributeError("Netmiko _autodetect_fs not found please upgrade Netmiko or "
                                      "specify dest_file_system in optional_args.")
-        self.device.send_command("changeto context " + self.context)
+        if self.context and self.context != 'system':
+            self.device.send_command("changeto context " + self.context)
 
     def close(self):
         """Implementation of NAPALM method close."""
