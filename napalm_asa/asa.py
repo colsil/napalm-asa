@@ -22,6 +22,7 @@ import re
 from napalm_base.base import NetworkDriver
 from napalm_base.utils import py23_compat
 from napalm_ios import IOSDriver
+import napalm_base.constants as C
 
 from netmiko import ConnectHandler
 
@@ -182,14 +183,14 @@ class AsaDriver(NetworkDriver):
             if "Name: \"Chassis\"" in line:
                 chassis_flag = True
             if chassis_flag and "PID: " in line:
-                match = re.search(r'PID: (\S*) .*',line)
+                match = re.search(r'PID: (\S*) .*', line)
                 model = match.group(1)
                 chassis_flag = False
 
         # Build interface list
         interface_list = []
         for line in show_interfaces.splitlines():
-            interface_match = re.search(r'\S+\d+\/\d+\.?\d*',line)
+            interface_match = re.search(r'\S+\d+\/\d+\.?\d*', line)
             if interface_match:
                 interface_list.append(interface_match.group(0))
 
@@ -203,3 +204,76 @@ class AsaDriver(NetworkDriver):
             'fqdn': fqdn,
             'interface_list': interface_list
         }
+
+    def ping(self, destination, source=C.PING_SOURCE, ttl=C.PING_TTL, timeout=C.PING_TIMEOUT,
+             size=C.PING_SIZE, count=C.PING_COUNT, vrf=C.PING_VRF):
+        """
+        Execute ping on the device and returns a dictionary with the result.
+        Output dictionary has one of following keys:
+            * success
+            * error
+        In case of success, inner dictionary will have the following keys:
+            * probes_sent (int)
+            * packet_loss (int)
+            * rtt_min (float)
+            * rtt_max (float)
+            * rtt_avg (float)
+            * rtt_stddev (float)
+            * results (list)
+        'results' is a list of dictionaries with the following keys:
+            * ip_address (str)
+            * rtt (float)
+        """
+        ping_dict = {}
+        # source must be the string nameif of the interface
+        # ASA doesn't accept a source ip
+        if source:
+            command = 'ping {} {}'.format(source, destination)
+        else:
+            command = 'ping {}'.format(destination)
+        command += ' timeout {}'.format(timeout)
+        command += ' size {}'.format(size)
+        command += ' repeat {}'.format(count)
+
+        output = self._send_command(command)
+        if '%' in output:
+            ping_dict['error'] = output
+        elif 'Sending' in output:
+            ping_dict['success'] = {
+                'probes_sent': 0,
+                'probes_sent': 0,
+                'packet_loss': 0,
+                'rtt_min': 0.0,
+                'rtt_max': 0.0,
+                'rtt_avg': 0.0,
+                'rtt_stddev': 0.0,
+                'results': []
+            }
+
+            for line in output.splitlines():
+                fields = line.split()
+                if 'Success rate is 0' in line:
+                    sent_and_received = re.search(r'\((\d*)/(\d*)\)', fields[5])
+                    probes_sent = int(sent_and_received.groups()[0])
+                    probes_received = int(sent_and_received.groups()[1])
+                    ping_dict['success']['probes_sent'] = probes_sent
+                    ping_dict['success']['packet_loss'] = probes_sent - probes_received
+                elif 'Success rate is' in line:
+                    sent_and_received = re.search(r'\((\d*)/(\d*)\)', fields[5])
+                    probes_sent = int(sent_and_received.groups()[0])
+                    probes_received = int(sent_and_received.groups()[1])
+                    min_avg_max = re.search(r'(\d*)/(\d*)/(\d*)', fields[9])
+                    ping_dict['success']['probes_sent'] = probes_sent
+                    ping_dict['success']['packet_loss'] = probes_sent - probes_received
+                    ping_dict['success'].update({
+                        'rtt_min': float(min_avg_max.groups()[0]),
+                        'rtt_avg': float(min_avg_max.groups()[1]),
+                        'rtt_max': float(min_avg_max.groups()[2]),
+                    })
+                    results_array = []
+                    for i in range(probes_received):
+                        results_array.append({'ip_address': py23_compat.text_type(destination),
+                                              'rtt': 0.0})
+                    ping_dict['success'].update({'results': results_array})
+
+        return ping_dict
