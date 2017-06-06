@@ -33,7 +33,7 @@ class AsaDriver(NetworkDriver):
 
     def __init__(self, hostname, username, password, timeout=60, optional_args=None):
         """Constructor."""
-        super(AsaDriver, self).__init__()
+        super(AsaDriver, self).__init__(hostname, username, password, timeout, optional_args)
         self.device = None
         self.hostname = hostname
         self.username = username
@@ -121,7 +121,7 @@ class AsaDriver(NetworkDriver):
 
         return configs
 
-    def _process_config_output(self,output):
+    def _process_config_output(self, output):
         newoutput = ''
         for line in output.splitlines():
             # Remove non configuration output
