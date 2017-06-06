@@ -225,6 +225,14 @@ class AsaDriver(NetworkDriver):
             * rtt (float)
         """
         ping_dict = {}
+        # vrf in the asa world is a context
+        # no support for pinging from a different context from system context
+        # so change context before executing ping
+        if vrf:
+            output = self._send_command('changeto context {}'.format(vrf))
+            if '%' in output:
+                ping_dict['error'] = output
+
         # source must be the string nameif of the interface
         # ASA doesn't accept a source ip
         if source:
@@ -276,4 +284,7 @@ class AsaDriver(NetworkDriver):
                                               'rtt': 0.0})
                     ping_dict['success'].update({'results': results_array})
 
+        if vrf:
+            # change back to system context
+            self._send_command('changeto system')
         return ping_dict
