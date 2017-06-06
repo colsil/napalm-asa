@@ -182,7 +182,7 @@ class AsaDriver(NetworkDriver):
                 chassis_flag = True
             if chassis_flag and "PID: " in line:
                 match = re.search(r'PID: (\S*) .*',line)
-                model = match.group(0)
+                model = match.group(1)
                 chassis_flag = False
 
         # Build interface list
