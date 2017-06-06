@@ -124,7 +124,13 @@ class AsaDriver(NetworkDriver):
         newoutput = ''
         for line in output.splitlines():
             # Remove non configuration output
-            if re.search(r'^:', line) is None:
+            if re.search(r'^:', line):
+                continue
+            elif re.search(r'^ASA Version', line):
+                continue
+            elif re.search(r'^Cryptochecksum', line):
+                continue
+            else:
                 newoutput += line + "\n"
         return newoutput
 
