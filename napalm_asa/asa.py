@@ -17,13 +17,14 @@ Read https://napalm.readthedocs.io for more information.
 """
 from __future__ import print_function
 from __future__ import unicode_literals
-from difflib import unified_diff
+
 import re
+from difflib import unified_diff
+
+import napalm_base.constants as C
 from napalm_base.base import NetworkDriver
 from napalm_base.utils import py23_compat
 from napalm_ios import IOSDriver
-import napalm_base.constants as C
-
 from netmiko import ConnectHandler
 
 
@@ -32,6 +33,7 @@ class AsaDriver(NetworkDriver):
 
     def __init__(self, hostname, username, password, timeout=60, optional_args=None):
         """Constructor."""
+        super(AsaDriver, self).__init__()
         self.device = None
         self.hostname = hostname
         self.username = username
@@ -108,14 +110,25 @@ class AsaDriver(NetworkDriver):
         if retrieve in ('startup', 'all'):
             command = 'show startup-config'
             output = self._send_command(command)
+            output = self._process_config_output(output)
             configs['startup'] = output
 
         if retrieve in ('running', 'all'):
             command = 'show running-config'
             output = self._send_command(command)
+            output = self._process_config_output(output)
             configs['running'] = output
 
         return configs
+
+    def _process_config_output(self,output):
+        newoutput = ''
+        for line in output.splitlines():
+            # Remove non configuration output
+            if re.search(r'^:', line):
+                pass
+            else:
+                newoutput += line
 
     def load_replace_candidate(self, filename=None, config=None):
         if filename:
@@ -153,7 +166,8 @@ class AsaDriver(NetworkDriver):
     def get_facts(self):
         vendor = u'Cisco'
         uptime = -1
-        serial_number, fqdn, os_version, hostname, model = (u'Unknown', u'Unknown', u'Unknown', u'Unknown', u'Unknown')
+        serial_number, fqdn, os_version, hostname, model = (
+            u'Unknown', u'Unknown', u'Unknown', u'Unknown', u'Unknown')
 
         show_ver = self._send_command('show version')
         show_hostname = self._send_command('show hostname')
@@ -169,7 +183,10 @@ class AsaDriver(NetworkDriver):
         # Gather os version, uptime and serial number
         for line in show_ver.splitlines():
             if 'Cisco Adaptive Security Appliance Software Version' in line:
-                os_version_match = re.match(r"Cisco Adaptive Security Appliance Software Version (\S*)", line)
+                os_version_match = re.match(
+                    r"Cisco Adaptive Security Appliance Software Version (\S*)",
+                    line
+                )
                 os_version = os_version_match.group(1)
             if hostname + ' up ' in line:
                 _, uptime_str = line.split(' up ')
@@ -279,12 +296,15 @@ class AsaDriver(NetworkDriver):
                         'rtt_max': float(min_avg_max.groups()[2]),
                     })
                     results_array = []
-                    for i in range(probes_received):
+                    for _ in range(probes_received):
                         results_array.append({'ip_address': py23_compat.text_type(destination),
                                               'rtt': 0.0})
                     ping_dict['success'].update({'results': results_array})
 
         if vrf:
-            # change back to system context
-            self._send_command('changeto system')
+            # change back to the default context if we've changed away
+            if self.context and self.context != 'system':
+                self.device.send_command("changeto context " + self.context)
+            elif self.context:
+                self.device.send_command("changeto system")
         return ping_dict
