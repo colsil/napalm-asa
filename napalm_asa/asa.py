@@ -168,7 +168,7 @@ class AsaDriver(NetworkDriver):
         for line in show_ver.splitlines():
             if 'Cisco Adaptive Security Appliance Software Version' in line:
                 os_version_match = re.match(r"Cisco Adaptive Security Appliance Software Version (\S*)", line)
-                os_version = os_version_match.group(0)
+                os_version = os_version_match.group(1)
             if hostname + ' up ' in line:
                 _, uptime_str = line.split(' up ')
                 uptime = IOSDriver.parse_uptime(uptime_str)
@@ -183,6 +183,7 @@ class AsaDriver(NetworkDriver):
             if chassis_flag and "PID: " in line:
                 match = re.search(r'PID: (\S*) .*',line)
                 model = match.group(0)
+                chassis_flag = False
 
         # Build interface list
         interface_list = []
