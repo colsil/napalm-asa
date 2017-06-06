@@ -124,7 +124,7 @@ class AsaDriver(NetworkDriver):
         newoutput = ''
         for line in output.splitlines():
             # Remove non configuration output
-            if re.search(r'^:', line) is False:
+            if re.search(r'^:', line) is None:
                 newoutput += line
         return newoutput
 
