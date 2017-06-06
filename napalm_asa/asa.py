@@ -128,6 +128,7 @@ class AsaDriver(NetworkDriver):
                 pass
             else:
                 newoutput += line
+        return newoutput
 
     def load_replace_candidate(self, filename=None, config=None):
         if filename:
