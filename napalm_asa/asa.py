@@ -167,8 +167,8 @@ class AsaDriver(NetworkDriver):
         # Gather os version, uptime and serial number
         for line in show_ver.splitlines():
             if 'Cisco Adaptive Security Appliance Software Version' in line:
-                _, os_version = re.split(r"(Cisco Adaptive Security Appliance Software Version )(\S*)")
-                os_version = os_version.strip()
+                os_version_match = re.match(r"Cisco Adaptive Security Appliance Software Version (\S*)", line)
+                os_version = os_version_match.group(0)
             if hostname + ' up ' in line:
                 _, uptime_str = line.split(' up ')
                 uptime = IOSDriver.parse_uptime(uptime_str)
