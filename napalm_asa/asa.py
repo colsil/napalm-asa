@@ -158,6 +158,7 @@ class AsaDriver(NetworkDriver):
         show_hostname = self._send_command('show hostname')
         show_fqdn = self._send_command('show hostname fqdn')
         show_inventory = self._send_command('show inventory')
+        show_interfaces = self._send_command('show interface ip brief')
 
         # Hostname and FQDN are returned by show commands without any other output
         hostname = show_hostname.strip()
@@ -187,6 +188,10 @@ class AsaDriver(NetworkDriver):
 
         # Build interface list
         interface_list = []
+        for line in show_interfaces.splitlines():
+            interface_match = re.search(r'\S+\d+\/\d+\.?\d*',line)
+            if interface_match:
+                interface_list.append(interface_match.group(0))
 
         return {
             'uptime': uptime,
