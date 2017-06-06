@@ -125,7 +125,7 @@ class AsaDriver(NetworkDriver):
         for line in output.splitlines():
             # Remove non configuration output
             if re.search(r'^:', line) is None:
-                newoutput += line + "/n"
+                newoutput += line + "\n"
         return newoutput
 
     def load_replace_candidate(self, filename=None, config=None):
