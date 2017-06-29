@@ -27,9 +27,9 @@ class TestConfigAsaDriver(unittest.TestCase, TestConfigNetworkDriver):
     @classmethod
     def setUpClass(cls):
         """Run before starting the tests."""
-        hostname = '192.168.0.13'
-        username = 'lab'
-        password = 'lab123'
+        hostname = '172.16.179.129'
+        username = 'vagrant'
+        password = 'vagrant'
         cls.vendor = 'asa'
 
         optional_args = { }
