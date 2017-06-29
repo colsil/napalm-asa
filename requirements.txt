@@ -1,2 +1,3 @@
 napalm_base
+napalm_ios
 netmiko

@@ -90,3 +90,4 @@ ENV/
 
 # jetbrains IDE (pycharm) project files
 .idea
+report.json

@@ -28,12 +28,12 @@ class TestConfigDriver(unittest.TestCase, TestConfigNetworkDriver):
     @classmethod
     def setUpClass(cls):
         """Run before starting the tests."""
-        hostname = '127.0.0.1'
-        username = 'vagrant'
-        password = 'vagrant'
+        hostname = '192.168.0.13'
+        username = 'lab'
+        password = 'lab123'
         cls.vendor = 'asa'
 
-        optional_args = {'port': 12443, }
+        optional_args = {}
         cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
                                    optional_args=optional_args)
         cls.device.open()
@@ -51,12 +51,12 @@ class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
         """Run before starting the tests."""
         cls.mock = True
 
-        hostname = '127.0.0.1'
-        username = 'vagrant'
-        password = 'vagrant'
+        hostname = '192.168.0.13'
+        username = 'lab'
+        password = 'lab123'
         cls.vendor = 'asa'
 
-        optional_args = {'port': 12443, }
+        optional_args = {}
         cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
                                    optional_args=optional_args)
 

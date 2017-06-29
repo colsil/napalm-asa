@@ -12,7 +12,6 @@ import pytest
 @pytest.fixture(scope='class')
 def set_device_parameters(request):
     """Set up the class."""
-
     def fin():
         request.cls.device.close()
 
@@ -57,3 +56,7 @@ class FakeSkeletonDevice(BaseTestDouble):
                 result.append({'output': self.read_txt_file(full_path)})
 
         return result
+
+    def disconnect(self):
+        """Do nothing as it's a fake device"""
+        pass
