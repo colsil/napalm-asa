@@ -1,0 +1,10 @@
+{
+  "Management0/0": {
+    "description": "management",
+    "is_enabled": true,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "mac_address": "00:0C:29:B0:CD:94",
+    "speed": 1000
+  }
+}

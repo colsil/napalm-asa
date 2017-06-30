@@ -1,0 +1,201 @@
+Interface GigabitEthernet0/0 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex(Full-duplex), Auto-Speed(1000 Mbps)
+	Input flow control is unsupported, output flow control is off
+	Available for allocation to a context
+	MAC address c47d.4f98.cbce, MTU not set
+	IP address unassigned
+	58545 packets input, 5781514 bytes, 0 no buffer
+	Received 10079 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	1253 L2 decode drops
+	45839 packets output, 4343220 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 2 interface resets
+	0 late collisions, 0 deferred
+	0 input reset drops, 0 output reset drops, 0 tx hangs
+	input queue (blocks free curr/low): hardware (511/510)
+	output queue (blocks free curr/low): hardware (511/509)
+Interface GigabitEthernet0/0.1002 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	VLAN identifier 1002
+	Available for allocation to a context
+Interface GigabitEthernet0/0.2002 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	VLAN identifier 2002
+	Available for allocation to a context
+Interface GigabitEthernet0/1 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex(Full-duplex), Auto-Speed(1000 Mbps)
+	Input flow control is unsupported, output flow control is off
+	Available for allocation to a context
+	MAC address c47d.4f98.cbcf, MTU not set
+	IP address unassigned
+	47705 packets input, 4464844 bytes, 0 no buffer
+	Received 10716 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	1919 L2 decode drops
+	48088 packets output, 4727776 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 6 interface resets
+	0 late collisions, 0 deferred
+	0 input reset drops, 0 output reset drops, 0 tx hangs
+	input queue (blocks free curr/low): hardware (511/510)
+	output queue (blocks free curr/low): hardware (511/510)
+Interface GigabitEthernet0/1.1001 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	VLAN identifier 1001
+	Available for allocation to a context
+Interface GigabitEthernet0/1.2001 "", is up, line protocol is up
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	VLAN identifier 2001
+	Available for allocation to a context
+Interface GigabitEthernet0/2 "", is administratively down, line protocol is down
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Available for allocation to a context
+	MAC address c47d.4f98.cbd0, MTU not set
+	IP address unassigned
+	0 packets input, 0 bytes, 0 no buffer
+	Received 0 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 1 interface resets
+	0 late collisions, 0 deferred
+	0 input reset drops, 0 output reset drops, 0 tx hangs
+	input queue (blocks free curr/low): hardware (511/511)
+	output queue (blocks free curr/low): hardware (511/511)
+Interface GigabitEthernet0/3 "", is administratively down, line protocol is down
+  Hardware is i82546GB rev03, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Available for allocation to a context
+	MAC address c47d.4f98.cbd1, MTU not set
+	IP address unassigned
+	0 packets input, 0 bytes, 0 no buffer
+	Received 0 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 1 interface resets
+	0 late collisions, 0 deferred
+	0 input reset drops, 0 output reset drops, 0 tx hangs
+	input queue (blocks free curr/low): hardware (511/511)
+	output queue (blocks free curr/low): hardware (511/511)
+Interface Management0/0 "", is up, line protocol is up
+  Hardware is i82557, BW 100 Mbps, DLY 100 usec
+	Auto-Duplex(Full-duplex), Auto-Speed(100 Mbps)
+	Input flow control is unsupported, output flow control is unsupported
+	Available for allocation to a context
+	MAC address c47d.4f98.cbcd, MTU not set
+	IP address unassigned
+	2525010 packets input, 595208897 bytes, 0 no buffer
+	Received 2434185 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	199043 packets output, 71811796 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 0 interface resets
+	0 babbles, 0 late collisions, 0 deferred
+	0 lost carrier, 0 no carrier
+	0 input reset drops, 0 output reset drops
+	input queue (curr/max packets): hardware (0/1) software (0/28)
+	output queue (curr/max packets): hardware (3/46) software (0/1)
+Interface GigabitEthernet1/0 "", is administratively down, line protocol is down
+  Hardware is VCS7380 rev01, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Media-type configured as RJ45 connector
+	Available for allocation to a context
+	MAC address 8843.e10c.4d59, MTU not set
+	IP address unassigned
+	22 packets input, 1408 bytes, 0 no buffer
+	Received 22 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 0 interface resets
+	0 late collisions, 0 deferred
+	0 rate limit drops
+	0 input reset drops, 0 output reset drops
+	input queue (blocks free curr/low): hardware (0/0)
+	output queue (blocks free curr/low): hardware (0/0)
+Interface GigabitEthernet1/1 "", is administratively down, line protocol is down
+  Hardware is VCS7380 rev01, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Media-type configured as RJ45 connector
+	Available for allocation to a context
+	MAC address 8843.e10c.4d5a, MTU not set
+	IP address unassigned
+	0 packets input, 0 bytes, 0 no buffer
+	Received 0 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 0 interface resets
+	0 late collisions, 0 deferred
+	0 rate limit drops
+	0 input reset drops, 0 output reset drops
+	input queue (blocks free curr/low): hardware (0/0)
+	output queue (blocks free curr/low): hardware (0/0)
+Interface GigabitEthernet1/1.100 "", is down, line protocol is down
+  Hardware is VCS7380 rev01, BW 1000 Mbps, DLY 10 usec
+	VLAN identifier none
+	Media-type configured as RJ45 connector
+	Available but not configured with VLAN
+Interface GigabitEthernet1/2 "", is administratively down, line protocol is down
+  Hardware is VCS7380 rev01, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Media-type configured as RJ45 connector
+	Available for allocation to a context
+	MAC address 8843.e10c.4d5b, MTU not set
+	IP address unassigned
+	0 packets input, 0 bytes, 0 no buffer
+	Received 0 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 0 interface resets
+	0 late collisions, 0 deferred
+	0 rate limit drops
+	0 input reset drops, 0 output reset drops
+	input queue (blocks free curr/low): hardware (0/0)
+	output queue (blocks free curr/low): hardware (0/0)
+Interface GigabitEthernet1/3 "", is administratively down, line protocol is down
+  Hardware is VCS7380 rev01, BW 1000 Mbps, DLY 10 usec
+	Auto-Duplex, Auto-Speed
+	Input flow control is unsupported, output flow control is off
+	Media-type configured as RJ45 connector
+	Available for allocation to a context
+	MAC address 8843.e10c.4d5c, MTU not set
+	IP address unassigned
+	0 packets input, 0 bytes, 0 no buffer
+	Received 0 broadcasts, 0 runts, 0 giants
+	0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored, 0 abort
+	0 pause input, 0 resume input
+	0 L2 decode drops
+	0 packets output, 0 bytes, 0 underruns
+	0 pause output, 0 resume output
+	0 output errors, 0 collisions, 0 interface resets
+	0 late collisions, 0 deferred
+	0 rate limit drops
+	0 input reset drops, 0 output reset drops
+	input queue (blocks free curr/low): hardware (0/0)
+	output queue (blocks free curr/low): hardware (0/0)

@@ -1,0 +1,114 @@
+{
+  "GigabitEthernet0/0.2002": {
+    "is_enabled": true,
+    "mac_address": "",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/1": {
+    "is_enabled": true,
+    "mac_address": "C4:7D:4F:98:CB:CF",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/0": {
+    "is_enabled": true,
+    "mac_address": "C4:7D:4F:98:CB:CE",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet1/1": {
+    "is_enabled": false,
+    "mac_address": "88:43:E1:0C:4D:5A",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet1/0": {
+    "is_enabled": false,
+    "mac_address": "88:43:E1:0C:4D:59",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/3": {
+    "is_enabled": false,
+    "mac_address": "C4:7D:4F:98:CB:D1",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/2": {
+    "is_enabled": false,
+    "mac_address": "C4:7D:4F:98:CB:D0",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/1.1001": {
+    "is_enabled": true,
+    "mac_address": "",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet1/2": {
+    "is_enabled": false,
+    "mac_address": "88:43:E1:0C:4D:5B",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "Management0/0": {
+    "is_enabled": true,
+    "mac_address": "C4:7D:4F:98:CB:CD",
+    "speed": 100,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/0.1002": {
+    "is_enabled": true,
+    "mac_address": "",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet0/1.2001": {
+    "is_enabled": true,
+    "mac_address": "",
+    "speed": 1000,
+    "is_up": true,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet1/1.100": {
+    "is_enabled": true,
+    "mac_address": "",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  },
+  "GigabitEthernet1/3": {
+    "is_enabled": false,
+    "mac_address": "88:43:E1:0C:4D:5C",
+    "speed": 1000,
+    "is_up": false,
+    "last_flapped": -1.0,
+    "description": ""
+  }
+}

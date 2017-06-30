@@ -25,13 +25,16 @@ from difflib import unified_diff
 import napalm_base.constants as C
 from napalm_base.base import NetworkDriver
 from napalm_base.utils import py23_compat
-from napalm_ios import IOSDriver
+from napalm_base.helpers import mac
 from netmiko import ConnectHandler
 
 HOUR_SECONDS = 3600
 DAY_SECONDS = 24 * HOUR_SECONDS
 WEEK_SECONDS = 7 * DAY_SECONDS
 YEAR_SECONDS = 365 * DAY_SECONDS
+
+MAC_REGEX = r"[a-fA-F0-9]{4}\.[a-fA-F0-9]{4}\.[a-fA-F0-9]{4}"
+
 
 class AsaDriver(NetworkDriver):
     """Napalm driver for Cisco ASA."""
@@ -258,7 +261,7 @@ class AsaDriver(NetworkDriver):
         (years, weeks, days, hours, minutes, seconds) = (0, 0, 0, 0, 0, 0)
 
         uptime_str = uptime_str.strip()
-        time_list = re.split(r"(\d+ \S+)",uptime_str)
+        time_list = re.split(r"(\d+ \S+)", uptime_str)
         for element in time_list:
             if re.search("year", element):
                 years = int(element.split()[0])
@@ -363,3 +366,94 @@ class AsaDriver(NetworkDriver):
             elif self.context:
                 self.device.send_command("changeto system")
         return ping_dict
+
+    def get_interfaces(self):
+        """
+        Get interface details.
+        last_flapped is not implemented
+        Example Output:
+        {   u'Management0/0': {   'description': u'N/A',
+                      'is_enabled': True,
+                      'is_up': True,
+                      'last_flapped': -1.0,
+                      'mac_address': u'a493.4cc1.67a7',
+                      'speed': 1000},
+        u'GigabitEthernet0/0': {   'description': u'Data Network',
+                        'is_enabled': True,
+                        'is_up': True,
+                        'last_flapped': -1.0,
+                        'mac_address': u'a493.4cc1.67a7',
+                        'speed': 1000},
+        u'GigabitEthernet0/1': {   'description': u'Voice Network',
+                        'is_enabled': True,
+                        'is_up': True,
+                        'last_flapped': -1.0,
+                        'mac_address': u'a493.4cc1.67a7',
+                        'speed': 1000}}
+        """
+        # default values.
+        last_flapped = -1.0
+
+        command = 'show interface'
+        output = self._send_command(command)
+
+        interface = description = mac_address = speed = speedformat = ''
+        is_enabled = is_up = None
+
+        interface_dict = {}
+        for line in output.splitlines():
+
+            interface_regex = r"^Interface\s+(\S+?)\s+\"(\S*)\",\s+is\s+(.+?),\s+line\s+protocol\s+is\s+(\S+)"
+            if re.search(interface_regex, line):
+                interface_match = re.search(interface_regex, line)
+                interface = interface_match.groups()[0]
+                description = interface_match.groups()[1]
+                status = interface_match.groups()[2]
+                protocol = interface_match.groups()[3]
+
+                if 'admin' in status:
+                    is_enabled = False
+                else:
+                    is_enabled = True
+                is_up = bool('up' in protocol)
+
+            speed_regex = r"^\s+.+BW\s+(\d+)\s+([KMG]?b)"
+            if re.search(speed_regex, line):
+                speed_match = re.search(speed_regex, line)
+                speed = speed_match.groups()[0]
+                speedformat = speed_match.groups()[1]
+                speed = float(speed)
+                if speedformat.startswith('Kb'):
+                    speed = speed / 1000.0
+                elif speedformat.startswith('Gb'):
+                    speed = speed * 1000
+                speed = int(round(speed))
+
+            vlan_regex = r"^\s+VLAN identifier"
+            if re.search(vlan_regex, line):
+                interface_dict[interface] = {'is_enabled': is_enabled, 'is_up': is_up,
+                                             'description': description, 'mac_address': mac_address,
+                                             'last_flapped': last_flapped, 'speed': speed}
+                interface = description = mac_address = speed = speedformat = ''
+                is_enabled = is_up = None
+
+            mac_addr_regex = r"^\s+MAC\s+address\s+({})".format(MAC_REGEX)
+            if re.search(mac_addr_regex, line):
+                mac_addr_match = re.search(mac_addr_regex, line)
+                mac_address = mac(mac_addr_match.groups()[0])
+
+                if interface == '':
+                    raise ValueError("Interface attributes were \
+                                                  found without any known interface")
+                if not isinstance(is_up, bool) or not isinstance(is_enabled, bool):
+                    raise ValueError("Did not correctly find the interface status")
+
+                interface_dict[interface] = {'is_enabled': is_enabled, 'is_up': is_up,
+                                             'description': description, 'mac_address': mac_address,
+                                             'last_flapped': last_flapped, 'speed': speed}
+                interface = description = mac_address = speed = speedformat = ''
+                is_enabled = is_up = None
+
+
+
+        return interface_dict
