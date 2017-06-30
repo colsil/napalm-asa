@@ -1,0 +1,2 @@
+Interface                  IP-Address      OK? Method Status                Protocol
+Management0/0              172.16.179.129  YES DHCP   up                    up

@@ -1,3 +1,11 @@
+: Saved
+
+:
+: Serial Number: 9AM863GT0TB
+: Hardware:   ASAv, 1024 MB RAM, CPU Pentium II 2494 MHz
+:
+ASA Version 9.7(1)4
+!
 hostname ciscoasa
 domain-name example.com
 enable password $sha512$5000$bkoG5s4BxpFOllWaojU5YA==$+73g2VIilHlVRhKc0La9Kw== pbkdf2
@@ -158,3 +166,5 @@ call-home
  profile License
   destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
   destination transport-method http
+Cryptochecksum:d4d5d43102560e1a5b12a52931e95e2b
+: end

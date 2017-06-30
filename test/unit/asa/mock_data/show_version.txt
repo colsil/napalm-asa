@@ -1,0 +1,52 @@
+
+Cisco Adaptive Security Appliance Software Version 9.7(1)4
+Firepower Extensible Operating System Version 2.1(1.66)
+Device Manager Version 7.7(1)
+
+Compiled on Fri 31-Mar-17 07:23 PDT by builders
+System image file is "boot:/asa971-4-smp-k8.bin"
+Config file at boot was "startup-config"
+
+ciscoasa up 15 mins 47 secs
+
+Hardware:   ASAv, 1024 MB RAM, CPU Pentium II 2494 MHz,
+Model Id:   ASAv5
+Internal ATA Compact Flash, 1024MB
+Slot 1: ATA Compact Flash, 8192MB
+BIOS Flash Firmware Hub @ 0x0, 0KB
+
+
+ 0: Ext: Management0/0       : address is 000c.29b0.cd94, irq 10
+
+License mode: Smart Licensing
+ASAv Platform License State: Unlicensed
+No active entitlement: no feature tier and no throughput level configured
+*Memory resource allocation is more than the permitted limit.
+
+Licensed features for this platform:
+Maximum Physical Interfaces       : 10
+Maximum VLANs                     : 25
+Inside Hosts                      : Unlimited
+Failover                          : Active/Standby
+Encryption-DES                    : Enabled
+Encryption-3DES-AES               : Enabled
+Security Contexts                 : 0
+Carrier                           : Disabled
+AnyConnect Premium Peers          : 2
+AnyConnect Essentials             : Disabled
+Other VPN Peers                   : 50
+Total VPN Peers                   : 50
+AnyConnect for Mobile             : Disabled
+AnyConnect for Cisco VPN Phone    : Disabled
+Advanced Endpoint Assessment      : Disabled
+Shared License                    : Disabled
+Total TLS Proxy Sessions          : 2
+Botnet Traffic Filter             : Enabled
+Cluster                           : Disabled
+
+Serial Number: 9AM863GT0TB
+
+Image type          : Release
+Key version         : A
+
+Configuration has not been modified since last system restart.

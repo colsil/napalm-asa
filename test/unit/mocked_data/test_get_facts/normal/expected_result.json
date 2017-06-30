@@ -1,0 +1,10 @@
+{
+	"os_version": "9.7(1)4",
+	"uptime": 947,
+	"interface_list": ["Management0/0"],
+	"vendor": "Cisco",
+	"serial_number": "9AM863GT0TB",
+	"model": "ASAv",
+	"hostname": "ciscoasa",
+	"fqdn": "ciscoasa.example.com"
+}

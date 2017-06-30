@@ -1,0 +1,3 @@
+Name: "Chassis", DESCR: "ASAv Adaptive Security Virtual Appliance"
+PID: ASAv              , VID: V01     , SN: 9AM863GT0TB
+

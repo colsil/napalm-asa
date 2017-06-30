@@ -19,6 +19,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import re
+import socket
 from difflib import unified_diff
 
 import napalm_base.constants as C
@@ -27,6 +28,10 @@ from napalm_base.utils import py23_compat
 from napalm_ios import IOSDriver
 from netmiko import ConnectHandler
 
+HOUR_SECONDS = 3600
+DAY_SECONDS = 24 * HOUR_SECONDS
+WEEK_SECONDS = 7 * DAY_SECONDS
+YEAR_SECONDS = 365 * DAY_SECONDS
 
 class AsaDriver(NetworkDriver):
     """Napalm driver for Cisco ASA."""
@@ -47,6 +52,24 @@ class AsaDriver(NetworkDriver):
             optional_args = {}
         else:
             self.context = optional_args.get('context', None)
+
+    def is_alive(self):
+        """Returns a flag with the state of the SSH connection."""
+        null = chr(0)
+        try:
+            # Try sending ASCII null byte to maintain
+            #   the connection alive
+            self.device.send_command(null)
+        except (socket.error, EOFError):
+            # If unable to send, we can tell for sure
+            #   that the connection is unusable,
+            #   hence return False.
+            return {
+                'is_alive': False
+            }
+        return {
+            'is_alive': self.device.remote_conn.transport.is_active()
+        }
 
     def open(self):
         """Implementation of NAPALM method open."""
@@ -156,16 +179,14 @@ class AsaDriver(NetworkDriver):
         raise NotImplementedError
 
     def get_lldp_neighbors(self):
-        '''ASA implementation of get_lldp_neighbors
-        Always returns empty dict as ASA does not support CDP or LLDP
-        '''
-        return {}
+        """ASA does not support CDP or LLDP
+        """
+        raise NotImplementedError
 
     def get_lldp_neighbors_detail(self, interface=""):
-        """"ASA Implementation of get_lldp_neighbors_detail
-        Always returns empty dict as ASA does not support CDP or LLDP
+        """"ASA does not support CDP or LLDP
         """
-        return {}
+        raise NotImplementedError
 
     def get_facts(self):
         vendor = u'Cisco'
@@ -194,7 +215,7 @@ class AsaDriver(NetworkDriver):
                 os_version = os_version_match.group(1)
             if hostname + ' up ' in line:
                 _, uptime_str = line.split(' up ')
-                uptime = IOSDriver.parse_uptime(uptime_str)
+                uptime = self.parse_uptime(uptime_str)
             if "Serial Number: " in line:
                 _, serial_number = line.split(' Number: ')
                 serial_number = serial_number.strip()
@@ -225,6 +246,36 @@ class AsaDriver(NetworkDriver):
             'fqdn': fqdn,
             'interface_list': interface_list
         }
+
+    @staticmethod
+    def parse_uptime(uptime_str):
+        """
+        Extract the uptime string from the given Cisco Device.
+
+        Return the uptime in seconds as an integer
+        """
+        # Initialize to zero
+        (years, weeks, days, hours, minutes, seconds) = (0, 0, 0, 0, 0, 0)
+
+        uptime_str = uptime_str.strip()
+        time_list = re.split(r"(\d+ \S+)",uptime_str)
+        for element in time_list:
+            if re.search("year", element):
+                years = int(element.split()[0])
+            elif re.search("week", element):
+                weeks = int(element.split()[0])
+            elif re.search("day", element):
+                days = int(element.split()[0])
+            elif re.search("hour", element):
+                hours = int(element.split()[0])
+            elif re.search("min", element):
+                minutes = int(element.split()[0])
+            elif re.search("sec", element):
+                seconds = int(element.split()[0])
+
+        uptime_sec = (years * YEAR_SECONDS) + (weeks * WEEK_SECONDS) + (days * DAY_SECONDS) + \
+                     (hours * 3600) + (minutes * 60) + (seconds)
+        return uptime_sec
 
     def ping(self, destination, source=C.PING_SOURCE, ttl=C.PING_TTL, timeout=C.PING_TIMEOUT,
              size=C.PING_SIZE, count=C.PING_COUNT, vrf=C.PING_VRF):
