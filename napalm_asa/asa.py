@@ -457,3 +457,75 @@ class AsaDriver(NetworkDriver):
                 is_enabled = is_up = None
 
         return interface_dict
+
+    def get_interfaces_counters(self):
+        """Get counter detail for interfaces
+        Example output:
+        {
+            "GigabitEthernet0/0": {
+                "rx_unicast_packets": 48466,
+                "rx_octets": 457810,
+                "rx_broadcast_packets": 10094,
+                "rx_multicast_packets": 0,
+                "rx_errors": 0,
+                "rx_discards": 0,
+                "tx_unicast_packets": 160,
+                "tx_octets": 26812,
+                "tx_broadcast_packets": -1,
+                "tx_multicast_packets": -1,
+                "tx_errors": 0,
+                "tx_discards": 0
+            }
+        }
+        tx_broadcast, tx_multicast, rx_discards and tx_discards are not implemented
+        """
+        counters = {}
+        command = 'show interface'
+        output = self._send_command(command)
+        interface = ''
+        interface_regex = r"^Interface\s+(\S+)"
+        packets_bytes_in_regex = r"^\s+(\d+)\s+packets\s+input,\s+(\d+) bytes"
+        broadcast_in_regex = r"^\s+Received\s+(\d+)\s+broadcasts"
+        errors_in_regex = r"^\s+(\d+)\s+input\s+errors"
+        packets_bytes_out_regex = r"^\s+(\d+)\s+packets\s+output,\s+(\d+)\s+bytes"
+        errors_out_regex = r"^\s+(\d+)\s+output\s+errors"
+
+        for line in output.splitlines():
+            if re.search(interface_regex, line):
+                interface_match = re.search(interface_regex, line)
+                interface = interface_match.groups()[0]
+                # new interface found so clear counter variables
+                packets_in = bytes_in = broadcast_in = packets_out \
+                    = bytes_out = errors_in = errors_out = -1
+            if re.search(packets_bytes_in_regex, line):
+                packets_bytes_in_match = re.search(packets_bytes_in_regex, line)
+                packets_in = packets_bytes_in_match.groups()[0]
+                bytes_in = packets_bytes_in_match.groups()[1]
+            if re.search(broadcast_in_regex, line):
+                broadcast_in_match = re.search(broadcast_in_regex, line)
+                broadcast_in = broadcast_in_match.groups()[0]
+                counters[interface] = {}
+                counters[interface]['rx_unicast_packets'] = int(packets_in) - int(broadcast_in)
+                counters[interface]['rx_octets'] = int(bytes_in)
+                counters[interface]['rx_broadcast_packets'] = int(broadcast_in)
+                counters[interface]['rx_multicast_packets'] = -1  # not implemented
+            if re.search(errors_in_regex, line):
+                errors_in_match = re.search(errors_in_regex, line)
+                errors_in = errors_in_match.groups()[0]
+                counters[interface]['rx_errors'] = int(errors_in)
+                counters[interface]['rx_discards'] = -1  # not implemented
+            if re.search(packets_bytes_out_regex, line):
+                packets_bytes_out_match = re.search(packets_bytes_out_regex, line)
+                packets_out = packets_bytes_out_match.groups()[0]
+                bytes_out = packets_bytes_out_match.groups()[1]
+                counters[interface]['tx_unicast_packets'] = int(packets_out)
+                counters[interface]['tx_octets'] = int(bytes_out)
+                counters[interface]['tx_broadcast_packets'] = -1  # not implemented
+                counters[interface]['tx_multicast_packets'] = -1  # not implemented
+            if re.search(errors_out_regex, line):
+                errors_out_match = re.search(errors_out_regex, line)
+                errors_out = errors_out_match.groups()[0]
+                counters[interface]['tx_errors'] = int(errors_out)
+                counters[interface]['tx_discards'] = -1  # not implemented
+
+        return counters

@@ -1,0 +1,16 @@
+{
+  "Management0/0": {
+    "tx_discards": -1,
+    "tx_broadcast_packets": -1,
+    "tx_unicast_packets": 2562,
+    "rx_octets": 457810,
+    "tx_octets": 263723,
+    "rx_broadcast_packets": 0,
+    "tx_multicast_packets": -1,
+    "rx_multicast_packets": -1,
+    "rx_errors": 0,
+    "rx_unicast_packets": 4028,
+    "tx_errors": 0,
+    "rx_discards": -1
+  }
+}
