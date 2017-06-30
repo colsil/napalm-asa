@@ -56,7 +56,7 @@ class TestGetterDriver(unittest.TestCase, TestGettersNetworkDriver):
         password = 'vagrant'
         cls.vendor = 'asa'
 
-        optional_args = { }
+        optional_args = {}
         cls.device = asa.AsaDriver(hostname, username, password, timeout=60,
                                    optional_args=optional_args)
 
