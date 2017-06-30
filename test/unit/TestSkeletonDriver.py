@@ -32,7 +32,7 @@ class TestConfigAsaDriver(unittest.TestCase, TestConfigNetworkDriver):
         password = 'vagrant'
         cls.vendor = 'asa'
 
-        optional_args = { }
+        optional_args = {}
         cls.device = asa.AsaDriver(
             hostname,
             username,
