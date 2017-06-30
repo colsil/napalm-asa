@@ -24,8 +24,9 @@ from difflib import unified_diff
 
 import napalm_base.constants as C
 from napalm_base.base import NetworkDriver
-from napalm_base.utils import py23_compat
 from napalm_base.helpers import mac
+from napalm_base.utils import py23_compat
+
 from netmiko import ConnectHandler
 
 HOUR_SECONDS = 3600
@@ -403,7 +404,8 @@ class AsaDriver(NetworkDriver):
         interface_dict = {}
         for line in output.splitlines():
 
-            interface_regex = r"^Interface\s+(\S+?)\s+\"(\S*)\",\s+is\s+(.+?),\s+line\s+protocol\s+is\s+(\S+)"
+            interface_regex = \
+                r"^Interface\s+(\S+?)\s+\"(\S*)\",\s+is\s+(.+?),\s+line\s+protocol\s+is\s+(\S+)"
             if re.search(interface_regex, line):
                 interface_match = re.search(interface_regex, line)
                 interface = interface_match.groups()[0]
@@ -453,7 +455,5 @@ class AsaDriver(NetworkDriver):
                                              'last_flapped': last_flapped, 'speed': speed}
                 interface = description = mac_address = speed = speedformat = ''
                 is_enabled = is_up = None
-
-
 
         return interface_dict

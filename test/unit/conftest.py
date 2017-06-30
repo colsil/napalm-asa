@@ -4,13 +4,13 @@ from __future__ import unicode_literals
 
 from builtins import super
 
-import pytest
-from napalm_base.test import conftest as parent_conftest
+from napalm_asa import asa
 
+from napalm_base.test import conftest as parent_conftest
 from napalm_base.test.double import BaseTestDouble
 from napalm_base.utils import py23_compat
 
-from napalm_asa import asa
+import pytest
 
 
 @pytest.fixture(scope='class')

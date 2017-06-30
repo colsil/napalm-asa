@@ -14,11 +14,13 @@
 
 """Tests for IOSDriver."""
 
-import unittest
-from napalm_asa import asa
-from napalm_base.utils import py23_compat
-from napalm_base.test.base import TestConfigNetworkDriver, TestGettersNetworkDriver
 import re
+import unittest
+
+from napalm_asa import asa
+
+from napalm_base.test.base import TestConfigNetworkDriver, TestGettersNetworkDriver
+from napalm_base.utils import py23_compat
 
 
 class TestConfigASADriver(unittest.TestCase, TestConfigNetworkDriver):
