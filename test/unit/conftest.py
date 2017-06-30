@@ -58,5 +58,5 @@ class FakeSkeletonDevice(BaseTestDouble):
         return result
 
     def disconnect(self):
-        """Do nothing as it's a fake device"""
+        """Do nothing as it's a fake device."""
         pass
