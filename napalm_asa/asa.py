@@ -20,7 +20,8 @@ from __future__ import unicode_literals
 
 import re
 import socket
-from difflib import unified_diff
+
+from ciscoconfparse import CiscoConfParse
 
 import napalm_base.constants as C
 from napalm_base.base import NetworkDriver
@@ -51,6 +52,7 @@ class AsaDriver(NetworkDriver):
         self.candidate_config = None
 
         self.dest_file_system = None
+        self.context = None
 
         if optional_args is None:
             optional_args = {}
@@ -164,23 +166,29 @@ class AsaDriver(NetworkDriver):
     def load_replace_candidate(self, filename=None, config=None):
         if filename:
             with open(filename, 'r') as file:
-                self.candidate_config = file.read()
+                self.candidate_config = CiscoConfParse(file.readlines(), syntax="asa")
         elif config:
-            self.candidate_config = config
-        return True, "Candidate loaded to memory (no ASA support)"
+            self.candidate_config = CiscoConfParse(config=config.splitlines(), syntax="asa")
+        return True, "Candidate loaded to memory"
+
+    def _get_candidate_diff_lines(self):
+        running_config = CiscoConfParse(
+            self.get_config(retrieve='running')['running'].splitlines(),
+            syntax="asa"
+        )
+        diff = running_config.req_cfgspec_excl_diff(".*", ".*", self.candidate_config.ioscfg)
+        return diff
 
     def compare_config(self):
-        running_config = self.get_config(retrieve='running')['running']
-        running_config = running_config.splitlines()
-        candidate_config = self.candidate_config.splitlines()
-        diff = unified_diff(running_config, candidate_config)
+        diff = self._get_candidate_diff_lines()
         return "\n".join(diff)
 
     def discard_config(self):
         self.candidate_config = None
 
     def commit_config(self):
-        raise NotImplementedError
+        commands = self._get_candidate_diff_lines()
+        self.device.send_config_set(commands)
 
     def get_lldp_neighbors(self):
         """ASA does not support CDP or LLDP
