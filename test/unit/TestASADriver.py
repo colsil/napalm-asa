@@ -34,6 +34,9 @@ class TestConfigASADriver(unittest.TestCase, TestConfigNetworkDriver):
         cls.device = asa.AsaDriver(ip_addr, username, password)
         cls.device.open()
 
+        cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        cls.device.commit_config()
+
     def test_load_template(self):
         raise unittest.SkipTest()
 
