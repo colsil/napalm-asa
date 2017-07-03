@@ -37,21 +37,6 @@ class TestConfigASADriver(unittest.TestCase, TestConfigNetworkDriver):
         cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
         cls.device.commit_config()
 
-    def test_load_template(self):
-        raise unittest.SkipTest()
-
-    def test_merge_configuration(self):
-        raise unittest.SkipTest()
-
-    def test_merge_configuration_typo_and_rollback(self):
-        raise unittest.SkipTest()
-
-    def test_replacing_config_and_rollback(self):
-        raise unittest.SkipTest()
-
-    def test_replacing_config_with_typo(self):
-        raise unittest.SkipTest()
-
 
 # class TestGetterASADriver(unittest.TestCase, TestGettersNetworkDriver):
 #     """Getters Tests for ASADriver.
