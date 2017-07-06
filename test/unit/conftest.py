@@ -24,7 +24,7 @@ def set_device_parameters(request):
 
     request.cls.driver = asa.AsaDriver
     request.cls.patched_driver = PatchedASADriver
-    request.cls.vendor = 'ios'
+    request.cls.vendor = 'asa'
     parent_conftest.set_device_parameters(request)
 
 

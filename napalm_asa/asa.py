@@ -18,6 +18,7 @@ Read https://napalm.readthedocs.io for more information.
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import difflib
 import re
 import socket
 
@@ -50,14 +51,16 @@ class AsaDriver(NetworkDriver):
         self.timeout = timeout
 
         self.candidate_config = None
+        self.rollback_config = None
 
         self.dest_file_system = None
         self.context = None
 
         if optional_args is None:
             optional_args = {}
-        else:
-            self.context = optional_args.get('context', None)
+
+        self.context = optional_args.get('context', None)
+        self.auto_rollback_on_error = optional_args.get('auto_rollback_on_error', True)
 
     def is_alive(self):
         """Returns a flag with the state of the SSH connection."""
@@ -171,24 +174,41 @@ class AsaDriver(NetworkDriver):
             self.candidate_config = CiscoConfParse(config=config.splitlines(), syntax="asa")
         return True, "Candidate loaded to memory"
 
-    def _get_candidate_diff_lines(self):
+    def _get_config_diff_lines(self):
         running_config = CiscoConfParse(
             self.get_config(retrieve='running')['running'].splitlines(),
-            syntax="asa"
+            syntax='asa'
         )
-        diff = running_config.req_cfgspec_excl_diff(".*", ".*", self.candidate_config.ioscfg)
+        diff = difflib.unified_diff(running_config.ioscfg, self.candidate_config.ioscfg)
         return diff
 
+    def load_merge_candidate(self, filename=None, config=None):
+        """The ASA doesn't support merging configuration.
+        Not implemented.
+        """
+        raise NotImplementedError
+
     def compare_config(self):
-        diff = self._get_candidate_diff_lines()
-        return "\n".join(diff)
+        diff = self._get_config_diff_lines()
+        return "\n".join(diff).strip()
 
     def discard_config(self):
-        self.candidate_config = None
+        self.candidate_config = CiscoConfParse(
+            self.get_config(retrieve="running")['running'].splitlines(),
+            syntax='asa'
+        )
 
     def commit_config(self):
-        commands = self._get_candidate_diff_lines()
-        self.device.send_config_set(commands)
+        """The ASA doesn't support any easy way to commit configuration.
+        Not implemented for now.
+        """
+        raise NotImplementedError
+
+    def rollback(self):
+        """The ASA doesn't support any easy way to commit configuration.
+         Not implemented for now.
+        """
+        raise NotImplementedError
 
     def get_lldp_neighbors(self):
         """ASA does not support CDP or LLDP
